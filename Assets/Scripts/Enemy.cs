@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour
         if(currentWaypoint >= points.Length)
         {
             currentWaypoint = 1;
+            Destroy(gameObject);
         }
         print("Current Waypoint: " + currentWaypoint);
         // Get the current waypoint
@@ -76,6 +77,7 @@ public class Enemy : MonoBehaviour
             // Switch to next waypoint
             currentWaypoint++;
         }
+
         // >>ERROR HANDLING<<
         // If currentWaypoint is outside array length
         // Reset back to 1
