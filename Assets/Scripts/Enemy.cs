@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -7,6 +10,9 @@ public class Enemy : MonoBehaviour
     public float waypointDistance = 5f;
     public float Speed = 5f;
     public NavMeshAgent agent;
+    public GameObject healthCanvas;
+    public Image healthBar;
+    public Animator anim;
 
     private Transform[] points;
     private int currentWaypoint = 1;
