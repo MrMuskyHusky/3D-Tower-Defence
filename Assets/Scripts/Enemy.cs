@@ -6,100 +6,99 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    public enum AIState
+    {
+        Walking,
+        Die
+    }
+    public AIState state;
+    public float curHealth, maxHealth, moveSpeed;
+    public int curWaypoint, difficulty;
+    public bool isDead;
+
+    [Space(5), Header("Base References")]
+    public GameObject self;
     public Transform waypointParent;
-    public float waypointDistance = 5f;
-    public float Speed = 5f;
+    protected Transform[] waypoints;
     public NavMeshAgent agent;
     public GameObject healthCanvas;
     public Image healthBar;
     public Animator anim;
 
-    private Transform[] points;
-    private int currentWaypoint = 1;
-    private float onMeshThreshold = 3;
-
-    /*
-     * int = 1, 2, 3
-     * float = 0.125, .5f, 1.1f
-     * bool = true, false
-     * string = "Hello", "World"
-     * char = 'C', 'O', 'O', 'L'
-     */
-
-    // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        points = waypointParent.GetComponentsInChildren<Transform>();
-        agent = GetComponent<NavMeshAgent>();
+        waypoints = waypointParent.GetComponentsInChildren<Transform>();
+        curWaypoint = 1;
+        agent.speed = moveSpeed;
+        anim = self.GetComponent<Animator>();
+        Walking();
+    }
+    private void Update()
+    {
+        anim.SetBool("Walking", false);
+        anim.SetBool("Die", false);
+
+        Walking();
+        Die();
     }
 
-    void OnDrawGizmos()
+    void LateUpdate()
     {
-        points = waypointParent.GetComponentsInChildren<Transform>();
-        if (points != null)
+        if (healthBar.fillAmount < 1 && healthBar.fillAmount > 0)
         {
-            Gizmos.color = Color.red;
-            for (int i = 1; i < points.Length - 1; i++)
-            {
-                Transform pointA = points[i];
-                Transform pointB = points[i + 1];
-                Gizmos.DrawLine(pointA.position, pointB.position);
-            }
-
-            for (int i = 1; i < points.Length; i++)
-            {
-                Gizmos.DrawSphere(points[i].position, waypointDistance);
-            }
+            healthCanvas.SetActive(true);
+            healthCanvas.transform.LookAt(Camera.main.transform);
+            healthCanvas.transform.Rotate(0, 180, 0);
+        }
+        else if (healthCanvas.activeSelf == true)
+        {
+            healthCanvas.SetActive(false);
         }
     }
-    // Update is called once per frame
-    void Update()
+
+    public void Walking()
     {
-        if (points.Length == 0)
+        // DO NOT CONTINUE IF NO WAYPOINTS
+        if (waypoints.Length == 0)
         {
             return;
         }
-        if(currentWaypoint >= points.Length)
+        anim.SetBool("Walking", true);
+        // Follow waypoints
+        // Set agent to target
+        agent.destination = waypoints[curWaypoint].position;
+        // Are we at the waypoint?
+        if (self.transform.position.x.Equals(agent.destination.x) && self.transform.position.z == agent.destination.z)
         {
-            currentWaypoint = 1;
-            Destroy(gameObject);
-        }
-        print("Current Waypoint: " + currentWaypoint);
-        // Get the current waypoint
-        Transform currentPoint = points[currentWaypoint];
-        // Move towards current waypoint
-        // transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, Speed * Time.deltaTime);
-        agent.SetDestination(currentPoint.position);
-        // Check if distance between waypoint is close
-        float distance = Vector3.Distance(transform.position, currentPoint.position);
-        if (distance < waypointDistance)
-        {
-            // Switch to next waypoint
-            currentWaypoint++;
-        }
-
-        // >>ERROR HANDLING<<
-        // If currentWaypoint is outside array length
-        // Reset back to 1
-    }
-
-    public bool IsAgentOnNavMesh(GameObject agentObject)
-    {
-        Vector3 agentPosition = agentObject.transform.position;
-        NavMeshHit hit;
-
-        // Check for nearest point on navmesh to agent, within onMeshThreshold
-        if (NavMesh.SamplePosition(agentPosition, out hit, onMeshThreshold, NavMesh.AllAreas))
-        {
-            // Check if the positions are vertically aligned
-            if (Mathf.Approximately(agentPosition.x, hit.position.x)
-                && Mathf.Approximately(agentPosition.z, hit.position.z))
+            if (curWaypoint < waypoints.Length - 1)
             {
-                // Lastly, check if object is below navmesh
-                return agentPosition.y >= hit.position.y;
+                // If so go to next waypoint
+                curWaypoint++;
+            }
+            else
+            {
+                // If at the end of patrol go to start
+                curWaypoint = 1;
+                Destroy(gameObject);
             }
         }
+        // If so go to next waypoint
+    }
 
-        return false;
+    public void Die()
+    {
+        // If we are alive
+        if (curHealth > 0)
+        {
+            // Don't run this
+            return;
+        }
+        // else we are dead so run this
+        state = AIState.Die;
+        if(!isDead)
+        anim.SetTrigger("Die");
+        isDead = true;
+        agent.destination = self.transform.position;
+        // Drop Loot
     }
 }
