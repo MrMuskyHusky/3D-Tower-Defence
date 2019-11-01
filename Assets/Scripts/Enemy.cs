@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     public AIState state;
     public float curHealth, maxHealth, moveSpeed;
     public int curWaypoint, difficulty;
-    public bool isDead;
+    public bool isDead, dead;
 
     [Space(5), Header("Base References")]
     public GameObject self;
@@ -32,6 +32,9 @@ public class Enemy : MonoBehaviour
         agent.speed = moveSpeed;
         anim = self.GetComponent<Animator>();
         Walking();
+        anim.SetBool("Walking", false);
+        anim.SetBool("Die", false);
+
     }
     private void Update()
     {
@@ -58,7 +61,9 @@ public class Enemy : MonoBehaviour
 
     public void Walking()
     {
-        // DO NOT CONTINUE IF NO WAYPOINTS
+        if(!isDead)
+        {
+  // DO NOT CONTINUE IF NO WAYPOINTS
         if (waypoints.Length == 0)
         {
             return;
@@ -83,6 +88,8 @@ public class Enemy : MonoBehaviour
             }
         }
         // If so go to next waypoint
+        }
+      
     }
 
     public void Die()
@@ -94,11 +101,16 @@ public class Enemy : MonoBehaviour
             return;
         }
         // else we are dead so run this
-        state = AIState.Die;
-        if(!isDead)
-        anim.SetTrigger("Die");
-        isDead = true;
-        agent.destination = self.transform.position;
-        // Drop Loot
+        if(isDead)
+        {
+            state = AIState.Die;
+        if(!dead)
+        {
+            anim.SetTrigger("Die");
+            dead = true;
+        }
+            agent.destination = self.transform.position;
+            // Drop Loot
+        }
     }
 }
