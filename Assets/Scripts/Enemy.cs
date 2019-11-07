@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     public AIState state;
     public float curHealth, maxHealth, moveSpeed;
     public int curWaypoint, difficulty;
+    public float minDistance = 2f;
     public bool isDead, dead;
 
     [Space(5), Header("Base References")]
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
     public GameObject healthCanvas;
     public Image healthBar;
     public Animator anim;
+    public Transform targetPoint;
 
     public void Start()
     {
@@ -73,7 +75,8 @@ public class Enemy : MonoBehaviour
         // Set agent to target
         agent.destination = waypoints[curWaypoint].position;
         // Are we at the waypoint?
-        if (self.transform.position.x.Equals(agent.destination.x) && self.transform.position.z == agent.destination.z)
+        float distance = Vector3.Distance(self.transform.position, agent.destination);
+        if (distance < minDistance)
         {
             if (curWaypoint < waypoints.Length - 1)
             {
