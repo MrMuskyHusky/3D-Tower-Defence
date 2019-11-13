@@ -4,67 +4,103 @@ using UnityEngine.UI;
 
 public class WaveSpawner : MonoBehaviour
 {
+    public enum SpawnState
+    {
+        Spawning,
+        Waiting,
+        Counting
+    };
 
-    public static int EnemiesAlive = 0;
+    [System.Serializable]
+    public class Wave
+    {
+        public string name;
+        public Transform enemy;
+        public int count;
+        public float rate;
+    }
 
     public Wave[] waves;
-
-    public Transform spawnPoint;
+    public int nextWave = 0;
+    public Transform waypointParent;
 
     public float timeBetweenWaves = 5f;
-    private float countdown = 2f;
+    public float waveCountdown;
 
-    public Text waveCountdownText;
+    private float searchCountdown = 1f;
 
-    public GameManager gameManager;
+    public SpawnState state = SpawnState.Counting;
 
-    private int waveIndex = 0;
+    void Start()
+    {
+        waveCountdown = timeBetweenWaves;
+    }
 
     void Update()
     {
-        if (EnemiesAlive > 0)
+        if(state == SpawnState.Waiting)
         {
-            return;
+            if (EnemyIsAlive())
+            {
+                return;
+            }
+            else
+            {
+                Debug.Log("Wave Completed");
+                nextWave++;
+                state = SpawnState.Counting;
+                waveCountdown = timeBetweenWaves;
+            }
         }
 
-        if (waveIndex == waves.Length)
+        if(waveCountdown <= 0)
         {
-            gameManager.WinLevel();
-            this.enabled = false;
+            if(state != SpawnState.Spawning)
+            {
+                StartCoroutine(SpawnWave(waves[nextWave]));
+            }
         }
-
-        if (countdown <= 0f)
+        else
         {
-            StartCoroutine(SpawnWave());
-            countdown = timeBetweenWaves;
-            return;
+            waveCountdown -= Time.deltaTime;
         }
-
-        countdown -= Time.deltaTime;
-
-        countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
-
-        waveCountdownText.text = string.Format("{0:00.00}", countdown);
     }
 
-    IEnumerator SpawnWave()
+    bool EnemyIsAlive()
     {
-        Wave wave = waves[waveIndex];
-
-        EnemiesAlive = wave.count;
-
-        for (int i = 0; i < wave.count; i++)
+        searchCountdown -= Time.deltaTime;
+        if(searchCountdown <= 0f)
         {
-            SpawnEnemy(wave.enemy);
-            yield return new WaitForSeconds(1f / wave.rate);
+            searchCountdown = 1f;
+            if (GameObject.FindGameObjectWithTag("Enemy") == null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    IEnumerator SpawnWave(Wave _wave)
+    {
+        Debug.Log("Spawning Enemy" + _wave.name);
+        state = SpawnState.Spawning;
+        // Spawn
+        for (int i = 0; i < _wave.count; i++)
+        {
+            SpawnEnemy(_wave.enemy);
+            yield return new WaitForSeconds(1f/_wave.rate);
         }
 
-        waveIndex++;
+        state = SpawnState.Waiting;
+
+        yield break;
     }
 
-    void SpawnEnemy(GameObject enemy)
+    void SpawnEnemy(Transform _enemy)
     {
-        Instantiate(enemy, spawnPoint.position, spawnPoint.rotation);
+        Debug.Log("Spawning Enemy: " + _enemy.name);
+        Transform clone = Instantiate(_enemy, transform.position, transform.rotation);
+        Enemy enemy = clone.GetComponent<Enemy>();
+        enemy.waypointParent = waypointParent;
     }
-
 }

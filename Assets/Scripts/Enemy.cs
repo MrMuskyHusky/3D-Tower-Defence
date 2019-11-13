@@ -27,6 +27,31 @@ public class Enemy : MonoBehaviour
     public Animator anim;
     public Transform targetPoint;
 
+    private void OnDrawGizmos()
+    {
+        // If waypoints isn't assigned
+        if (waypoints == null)
+            return;
+
+        // If there are waypoints in the array
+        if(waypoints.Length > 0)
+        {
+            // Get current waypoint
+            Transform waypoint = waypoints[curWaypoint];
+            // If waypoint exists
+            if (waypoint)
+            {
+                // Draw it!
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(waypoint.position, minDistance);
+            }
+        }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(transform.position , .5f);
+        Gizmos.DrawSphere(agent.destination, .5f);
+
+    }
     public void Start()
     {
         waypoints = waypointParent.GetComponentsInChildren<Transform>();
@@ -46,10 +71,9 @@ public class Enemy : MonoBehaviour
         Walking();
         Die();
     }
-
     void LateUpdate()
     {
-        if (healthBar.fillAmount < 1 && healthBar.fillAmount > 0)
+        if (healthBar.fillAmount < 1 && healthBar.fillAmount > 0 && curHealth < 1)
         {
             healthCanvas.SetActive(true);
             healthCanvas.transform.LookAt(Camera.main.transform);
@@ -63,38 +87,37 @@ public class Enemy : MonoBehaviour
 
     public void Walking()
     {
-        if(!isDead)
+        if (!isDead)
         {
-  // DO NOT CONTINUE IF NO WAYPOINTS
-        if (waypoints.Length == 0)
-        {
-            return;
-        }
-        anim.SetBool("Walking", true);
-        // Follow waypoints
-        // Set agent to target
-        agent.destination = waypoints[curWaypoint].position;
-        // Are we at the waypoint?
-        float distance = Vector3.Distance(self.transform.position, agent.destination);
-        if (distance < minDistance)
-        {
-            if (curWaypoint < waypoints.Length - 1)
+            // DO NOT CONTINUE IF NO WAYPOINTS
+            if (waypoints.Length == 0)
             {
-                // If so go to next waypoint
-                curWaypoint++;
+                return;
             }
-            else
+            anim.SetBool("Walking", true);
+            // Follow waypoints
+            // Set agent to target
+            agent.destination = waypoints[curWaypoint].position;
+            // Are we at the waypoint?
+            float distance = Vector3.Distance(transform.position, agent.destination);
+            if (distance < minDistance)
             {
-                // If at the end of patrol go to start
-                curWaypoint = 1;
-                Destroy(gameObject);
+                if (curWaypoint < waypoints.Length - 1)
+                {
+                    // If so go to next waypoint
+                    curWaypoint++;
+                }
+                else
+                {
+                    // If at the end of patrol go to start
+                    curWaypoint = 1;
+                    Destroy(gameObject);
+                }
             }
+            // If so go to next waypoint
         }
-        // If so go to next waypoint
-        }
-      
-    }
 
+    }
     public void Die()
     {
         // If we are alive
@@ -104,14 +127,14 @@ public class Enemy : MonoBehaviour
             return;
         }
         // else we are dead so run this
-        if(isDead)
+        if (isDead)
         {
             state = AIState.Die;
-        if(!dead)
-        {
-            anim.SetTrigger("Die");
-            dead = true;
-        }
+            if (!dead)
+            {
+                anim.SetTrigger("Die");
+                dead = true;
+            }
             agent.destination = self.transform.position;
             // Drop Loot
         }
