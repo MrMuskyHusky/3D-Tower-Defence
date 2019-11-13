@@ -531,12 +531,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf99821bb0523ce40aed56febdb1458d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetEnemy: {fileID: 0}
-  range: 15
+  targetEnemy: {fileID: 2704718040102404275, guid: 76fa7f7e124bb294a8f0a1059fe2f589,
+    type: 3}
+  range: 10
   bulletPrefab: {fileID: 2044112759983730596, guid: 92b12c213ef251a44bd0d270a3551675,
     type: 3}
-  fireRate: 1.5
-  damageOverTime: 1
+  fireRate: 4
+  damageOverTime: 0
   slowAmount: 0.5
   enemyTag: Enemy
   partToRotate: {fileID: 1954616137411382127}
