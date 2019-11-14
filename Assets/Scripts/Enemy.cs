@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour
     }
     void LateUpdate()
     {
-        if (healthBar.fillAmount < 1 && healthBar.fillAmount > 0 && curHealth < 1)
+        if (healthBar.fillAmount < 1 && healthBar.fillAmount > 0)
         {
             healthCanvas.SetActive(true);
             healthCanvas.transform.LookAt(Camera.main.transform);

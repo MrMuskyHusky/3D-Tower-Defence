@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
         {
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.curHealth -= damage;
-            if (enemy.curHealth < 0)
+            if (enemy.curHealth <= 0)
             {
                 enemy.isDead = true;
             }

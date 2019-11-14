@@ -22,4 +22,10 @@ public class Shop : MonoBehaviour
         Debug.Log("Another Turret Selected");
         buildManager.SetTurretToBuild(buildManager.anotherTurretPrefab);
     }
+
+    public void PurchaseLazerTurret()
+    {
+        Debug.Log("Lazer Turret Selected");
+        buildManager.SetTurretToBuild(buildManager.anotherThirdTurretPrefab);
+    }
 }
