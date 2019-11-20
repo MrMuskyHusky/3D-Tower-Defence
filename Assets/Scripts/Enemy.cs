@@ -134,6 +134,7 @@ public class Enemy : MonoBehaviour
             {
                 anim.SetTrigger("Die");
                 dead = true;
+                PlayerStats.Money += 15;
             }
             agent.destination = self.transform.position;
             // Drop Loot

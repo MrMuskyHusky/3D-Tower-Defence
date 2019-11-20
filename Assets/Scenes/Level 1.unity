@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 67838743}
   - component: {fileID: 67838742}
+  - component: {fileID: 67838744}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -157,6 +158,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &67838744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67838741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5779db7d8649d6041ae962cf25cb4db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMoney: 100
+  startRound: 1
 --- !u!1 &91237214
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +352,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 653272386}
-        m_MethodName: PurchaseLazerTurret
+        m_MethodName: SelectLazerTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -496,8 +511,9 @@ GameObject:
   - component: {fileID: 312491255}
   - component: {fileID: 312491257}
   - component: {fileID: 312491256}
+  - component: {fileID: 312491258}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -543,7 +559,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: b267b12881558f642a2bb16054be4c30, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -564,6 +580,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312491254}
   m_CullTransparentMesh: 0
+--- !u!114 &312491258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312491254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2513a57ce063bc64fa2eeea1c02d4d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyText: {fileID: 312491256}
 --- !u!1 &342019283
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,6 +633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 359533431}
   - component: {fileID: 359533430}
+  - component: {fileID: 359533432}
   m_Layer: 0
   m_Name: WaveSpawner
   m_TagString: WayPoint
@@ -646,7 +676,9 @@ MonoBehaviour:
     rate: 0.5
   nextWave: 0
   waypointParent: {fileID: 2013541099}
-  timeBetweenWaves: 20
+  waveTextRound: {fileID: 676416685}
+  nextWaveAudio: {fileID: 359533432}
+  timeBetweenWaves: 12
   waveCountdown: 0
   state: 2
 --- !u!4 &359533431
@@ -663,6 +695,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &359533432
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359533429}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: d285572e9fb5c1f4895a528a94fa80ec, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.99768066
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &389576443
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +896,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
-  clickColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!1 &462060011
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,6 +1294,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2015d0e1b782a43b398418234e41f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  standardTurret:
+    prefab: {fileID: 6515450815941955615, guid: 49dae026f3d07aa4cbcf6f7cf798c07f,
+      type: 3}
+    cost: 100
+    upgradedPrefab: {fileID: 0}
+    upgradeCost: 0
+  anotherTurret:
+    prefab: {fileID: 7054847512809800154, guid: e3357bcf726f14e41ac69ef909c7c9fc,
+      type: 3}
+    cost: 150
+    upgradedPrefab: {fileID: 0}
+    upgradeCost: 0
+  lazerTurret:
+    prefab: {fileID: 2176659267208332253, guid: aeaa18a9a8b79014c9844f731b171ef4,
+      type: 3}
+    cost: 200
+    upgradedPrefab: {fileID: 0}
+    upgradeCost: 0
 --- !u!1 &676416683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1583,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 653272386}
-        m_MethodName: PurchaseAnotherTurret
+        m_MethodName: SelectAnotherTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1512,7 +1660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719154673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.5, y: -0.6, z: 32.49}
+  m_LocalPosition: {x: 28.97, y: -0.6, z: 32.97}
   m_LocalScale: {x: 2, y: 0.4, z: 2}
   m_Children: []
   m_Father: {fileID: 462060012}
@@ -1589,7 +1737,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
-  clickColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!1 &832963902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,7 +1936,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
-  clickColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!1 &943812109
 GameObject:
   m_ObjectHideFlags: 0
@@ -2341,7 +2493,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 653272386}
-        m_MethodName: PurchaseStandardTurret
+        m_MethodName: SelectStandardTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3237,7 +3389,7 @@ MonoBehaviour:
     type: 3}
   anotherTurretPrefab: {fileID: 7054847512809800154, guid: e3357bcf726f14e41ac69ef909c7c9fc,
     type: 3}
-  anotherThirdTurretPrefab: {fileID: 2176659267208332253, guid: aeaa18a9a8b79014c9844f731b171ef4,
+  lazerTurretPrefab: {fileID: 2176659267208332253, guid: aeaa18a9a8b79014c9844f731b171ef4,
     type: 3}
 --- !u!4 &1665942663
 Transform:
@@ -3722,7 +3874,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
-  clickColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!1 &1963226136
 GameObject:
   m_ObjectHideFlags: 0
@@ -3919,7 +4073,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
-  clickColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  turret: {fileID: 0}
 --- !u!1 &2013541098
 GameObject:
   m_ObjectHideFlags: 0

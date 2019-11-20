@@ -23,6 +23,8 @@ public class WaveSpawner : MonoBehaviour
     public Wave[] waves;
     public int nextWave = 0;
     public Transform waypointParent;
+    public Text waveTextRound;
+    public AudioSource nextWaveAudio;
 
     public float timeBetweenWaves = 5f;
     public float waveCountdown;
@@ -34,6 +36,7 @@ public class WaveSpawner : MonoBehaviour
     void Start()
     {
         waveCountdown = timeBetweenWaves;
+        nextWaveAudio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -48,8 +51,10 @@ public class WaveSpawner : MonoBehaviour
             {
                 Debug.Log("Wave Completed");
                 nextWave++;
+                nextWaveAudio.Play();
                 state = SpawnState.Counting;
                 waveCountdown = timeBetweenWaves;
+                waveTextRound.text = "Wave: " + (nextWave + 1).ToString();
             }
         }
 
