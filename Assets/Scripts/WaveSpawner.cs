@@ -22,6 +22,7 @@ public class WaveSpawner : MonoBehaviour
 
     public Wave[] waves;
     public int nextWave = 0;
+    public float moveSpeed;
     public Transform waypointParent;
     public Text waveTextRound;
     public AudioSource nextWaveAudio;
@@ -35,6 +36,7 @@ public class WaveSpawner : MonoBehaviour
 
     void Start()
     {
+        Enemy enemy = GetComponent<Enemy>();
         waveCountdown = timeBetweenWaves;
         nextWaveAudio = GetComponent<AudioSource>();
     }

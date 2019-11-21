@@ -1183,9 +1183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  curHealth: 1.2
-  maxHealth: 1.2
-  moveSpeed: 2
+  curHealth: 1
+  maxHealth: 1
+  moveSpeed: 2.1
   curWaypoint: 0
   difficulty: 0
   minDistance: 1
