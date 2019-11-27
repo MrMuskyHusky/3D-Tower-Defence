@@ -17,9 +17,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameIsOver)
-            return;
+        if(PlayerStats.Lives <= 0)
+        {
+            EndGame();
+        }
     }
+
     public void NextScene()
     {
         Scene activeScene = SceneManager.GetActiveScene();
@@ -29,6 +32,11 @@ public class GameManager : MonoBehaviour
     {
         Scene activeScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(activeScene.buildIndex);
+    }
+    public void MainMenu()
+    {
+        Scene active = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(0);
     }
 
     public void Pause()
@@ -53,10 +61,12 @@ public class GameManager : MonoBehaviour
     {
         GameIsOver = true;
         gameOverUI.SetActive(true);
+        Time.timeScale = 0;
     }
-    public void WinLevel()
+    void WinLevel()
     {
         GameIsOver = true;
         completeLevelUI.SetActive(true);
+        Time.timeScale = 0;
     }
 }

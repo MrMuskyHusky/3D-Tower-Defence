@@ -21,6 +21,7 @@ public class BuildManager : MonoBehaviour
     public GameObject lazerTurretPrefab;
 
     private TurretBlueprint turretToBuild;
+    private Node selectedNode;
 
     public bool CanBuild { get { return turretToBuild != null; } }
     public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
@@ -41,8 +42,15 @@ public class BuildManager : MonoBehaviour
         Debug.Log("Turret build! Money left: $ " + PlayerStats.Money);
     }
 
+    public void SelectNode (Node node)
+    {
+        selectedNode = node;
+        turretToBuild = null;
+    }
+
     public void SelectTurretToBuild(TurretBlueprint turret)
     {
         turretToBuild = turret;
+        selectedNode = null;
     }
 }

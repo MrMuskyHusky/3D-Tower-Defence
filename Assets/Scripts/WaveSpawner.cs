@@ -22,8 +22,8 @@ public class WaveSpawner : MonoBehaviour
 
     public Wave[] waves;
     public int nextWave = 0;
-    public float moveSpeed;
     public Transform waypointParent;
+    public GameObject completeLevelUI;
     public Text waveTextRound;
     public AudioSource nextWaveAudio;
 
@@ -70,6 +70,11 @@ public class WaveSpawner : MonoBehaviour
         else
         {
             waveCountdown -= Time.deltaTime;
+        }
+
+        if(nextWave == 5)
+        {
+            completeLevelUI.SetActive(true);
         }
     }
 

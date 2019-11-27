@@ -11,6 +11,7 @@ public class Node : MonoBehaviour
 
     [Header("Optional")]
     public GameObject turret;
+    public TurretBlueprint turretBlueprint;
 
     private Renderer rend;
     private Color startColor;
@@ -30,28 +31,49 @@ public class Node : MonoBehaviour
         return transform.position + positionOffset;
     }
 
-    void OnMouseDown()
+    void OnMouseOver()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0))
         {
-            return;
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
+            if (turret != null)
+            {
+                buildManager.SelectNode(this);
+                return;
+            }
+
+            if (!buildManager.CanBuild)
+            {
+                return;
+            }
+            buildManager.BuildTurretOn(this);
         }
 
-        if (!buildManager.CanBuild)
+        if (Input.GetMouseButtonDown(1))
         {
-            return;
+            PlayerStats.Money += turretBlueprint.GetSellAmount();
+            Destroy(turret);
+            turretBlueprint = null;
         }
-        if (turret != null)
-        {
-            Debug.Log("Can't build there!");
-            return;
-        }
-        buildManager.BuildTurretOn(this);
     }
 
     void OnMouseUp()
     {
         rend.material.color = startColor;
+    }
+
+    public void SellTurret()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            PlayerStats.Money += turretBlueprint.GetSellAmount();
+            Destroy(turret);
+            turretBlueprint = null;
+        }
     }
 
     void OnMouseEnter()
