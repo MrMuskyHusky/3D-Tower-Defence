@@ -1185,7 +1185,7 @@ MonoBehaviour:
   state: 0
   curHealth: 1
   maxHealth: 1
-  moveSpeed: 3.4
+  moveSpeed: 3.3
   curWaypoint: 0
   difficulty: 0
   minDistance: 1

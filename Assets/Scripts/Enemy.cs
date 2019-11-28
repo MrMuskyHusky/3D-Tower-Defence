@@ -106,18 +106,19 @@ public class Enemy : MonoBehaviour
                 {
                     // If so go to next waypoint
                     curWaypoint++;
+                    curWaypoint = Random.Range(2, 4);
                 }
                 else
                 {
                     // If at the end of patrol go to start
-                    curWaypoint = 1;
+                    // curWaypoint = 3;
                     Destroy(gameObject);
                     PlayerStats.Lives -= 3;
                 }
+                // If so go to next waypoint
             }
-            // If so go to next waypoint
-        }
 
+        }
     }
 
     public void Die()

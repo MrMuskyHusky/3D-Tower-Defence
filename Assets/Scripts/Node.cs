@@ -68,12 +68,9 @@ public class Node : MonoBehaviour
 
     public void SellTurret()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            PlayerStats.Money += turretBlueprint.GetSellAmount();
-            Destroy(turret);
-            turretBlueprint = null;
-        }
+        PlayerStats.Money += turretBlueprint.GetSellAmount();
+        Destroy(turret);
+        turretBlueprint = null;
     }
 
     void OnMouseEnter()

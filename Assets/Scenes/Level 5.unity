@@ -1935,7 +1935,7 @@ MonoBehaviour:
   completeLevelUI: {fileID: 1787164377}
   waveTextRound: {fileID: 252118149}
   nextWaveAudio: {fileID: 1039398029}
-  timeBetweenWaves: 13
+  timeBetweenWaves: 10
   waveCountdown: 0
   state: 2
 --- !u!4 &1039398028
