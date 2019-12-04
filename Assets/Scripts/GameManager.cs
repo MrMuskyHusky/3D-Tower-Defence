@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameOverUI;
     public GameObject completeLevelUI;
+    public GameObject pauseMenu;
 
 
     void Start()
@@ -21,6 +22,11 @@ public class GameManager : MonoBehaviour
         {
             EndGame();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
     }
 
     public void NextScene()
@@ -32,6 +38,7 @@ public class GameManager : MonoBehaviour
     {
         Scene activeScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(activeScene.buildIndex);
+        Time.timeScale = 1;
     }
     public void MainMenu()
     {
@@ -42,6 +49,7 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         // Code from Pause.cs
+        pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }
 
@@ -57,13 +65,13 @@ public class GameManager : MonoBehaviour
          Application.Quit();
 #endif
     }
-    void EndGame()
+    public void EndGame()
     {
         GameIsOver = true;
         gameOverUI.SetActive(true);
         Time.timeScale = 0;
     }
-    void WinLevel()
+    public void WinLevel()
     {
         GameIsOver = true;
         completeLevelUI.SetActive(true);

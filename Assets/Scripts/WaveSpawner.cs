@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class WaveSpawner : MonoBehaviour
     public Wave[] waves;
     public int nextWave = 0;
     public Transform waypointParent;
-    public GameObject completeLevelUI;
+    public GameObject completeLevelUI, finalWaveUI;
     public Text waveTextRound;
     public AudioSource nextWaveAudio;
 
@@ -39,6 +40,7 @@ public class WaveSpawner : MonoBehaviour
         Enemy enemy = GetComponent<Enemy>();
         waveCountdown = timeBetweenWaves;
         nextWaveAudio = GetComponent<AudioSource>();
+        finalWaveUI.SetActive(false);
     }
 
     void Update()
@@ -60,7 +62,7 @@ public class WaveSpawner : MonoBehaviour
             }
         }
 
-        if(waveCountdown <= 0)
+        if (waveCountdown <= 0)
         {
             if(state != SpawnState.Spawning)
             {
@@ -72,7 +74,32 @@ public class WaveSpawner : MonoBehaviour
             waveCountdown -= Time.deltaTime;
         }
 
-        if(nextWave == 5)
+        /*
+        switch (nextWave)
+        {
+            case 4:
+                finalWaveUI.gameObject.SetActive(true);
+                if (state == SpawnState.Spawning)
+                {
+                    finalWaveUI.gameObject.SetActive(false);
+                }
+                break;
+            case 5:
+                completeLevelUI.SetActive(true);
+                break;
+        }
+        */
+
+        if (nextWave == 4)
+        {
+            finalWaveUI.gameObject.SetActive(true);
+            if (state == SpawnState.Spawning)
+            {
+                finalWaveUI.gameObject.SetActive(false);
+            }
+        }
+
+        if (nextWave == 5)
         {
             completeLevelUI.SetActive(true);
         }
