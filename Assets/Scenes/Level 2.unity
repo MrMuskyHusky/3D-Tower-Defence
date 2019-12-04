@@ -511,6 +511,7 @@ MonoBehaviour:
   startMoney: 175
   startRound: 1
   startLives: 100
+  scorePoints: 0
 --- !u!1 &101616331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1691,35 +1692,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waves:
   - name: Wave 1
+    index: 0
     enemy: {fileID: 5539160148770587336, guid: a0f6503ba7ffc294dad3dc080e02148a, type: 3}
     count: 25
+    score: 0
     rate: 0.5
   - name: Wave 2
+    index: 0
     enemy: {fileID: 5539160148770587336, guid: a0f6503ba7ffc294dad3dc080e02148a, type: 3}
     count: 10
+    score: 0
     rate: 0.5
   - name: Wave 3
+    index: 0
     enemy: {fileID: 5539160148770587336, guid: a0f6503ba7ffc294dad3dc080e02148a, type: 3}
     count: 15
+    score: 0
     rate: 0.5
   - name: Wave 4
+    index: 0
     enemy: {fileID: 5539160148770587336, guid: a0f6503ba7ffc294dad3dc080e02148a, type: 3}
     count: 20
+    score: 0
     rate: 0.5
   - name: Wave 5
+    index: 0
     enemy: {fileID: 5539160148770587336, guid: a0f6503ba7ffc294dad3dc080e02148a, type: 3}
     count: 25
+    score: 0
     rate: 0.5
   nextWave: 0
   waypointParent: {fileID: 2013541099}
   completeLevelUI: {fileID: 913890822}
   finalWaveUI: {fileID: 749385106}
   waveTextRound: {fileID: 1572465039}
+  score: {fileID: 0}
+  highScore: {fileID: 0}
   nextWaveAudio: {fileID: 512571642}
   gameOverAudio: {fileID: 512571643}
   timeBetweenWaves: 10
   waveCountdown: 0
   state: 2
+  fileName: GameSave
 --- !u!4 &512571641
 Transform:
   m_ObjectHideFlags: 0

@@ -55,9 +55,7 @@ public class Node : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            PlayerStats.Money += turretBlueprint.GetSellAmount();
-            Destroy(turret);
-            turretBlueprint = null;
+            SellTurret();
         }
     }
 

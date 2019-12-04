@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
             {
                 anim.SetTrigger("Die");
                 dead = true;
-                PlayerStats.Money += 15;
+                PlayerStats.Money += 14;
                 PlayerStats.Score += 7;
             }
             agent.destination = self.transform.position;

@@ -21,6 +21,7 @@ public class WaveSpawner : MonoBehaviour
         public int index;
         [XmlIgnore] public Transform enemy;
         public int count;
+        public int score;
         public float rate;
     }
 
@@ -71,6 +72,7 @@ public class WaveSpawner : MonoBehaviour
 
     void Update()
     {
+        score.text = PlayerStats.Score.ToString() + " :Points";
         if (state == SpawnState.Waiting)
         {
             if (EnemyIsAlive())
