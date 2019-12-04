@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.Xml.Serialization;
+using System.IO;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -16,7 +18,8 @@ public class WaveSpawner : MonoBehaviour
     public class Wave
     {
         public string name;
-        public Transform enemy;
+        public int index;
+        [XmlIgnore] public Transform enemy;
         public int count;
         public float rate;
     }
@@ -26,26 +29,49 @@ public class WaveSpawner : MonoBehaviour
     public Transform waypointParent;
     public GameObject completeLevelUI, finalWaveUI;
     public Text waveTextRound;
+    public Text score;
+    public Text highScore;
     public AudioSource nextWaveAudio;
     public AudioSource gameOverAudio;
-
     public float timeBetweenWaves = 5f;
     public float waveCountdown;
+    public SpawnState state = SpawnState.Counting;
+
+    [Header("Saving")]
+    public string fileName = "GameSave";
+
+    private string fullPath;
 
     private float searchCountdown = 1f;
 
-    public SpawnState state = SpawnState.Counting;
 
     void Start()
     {
+        fullPath = Application.persistentDataPath + "/" + fileName + ".xml";
+
+        if(File.Exists(fullPath))
+        {
+            Wave currentWave = Load(fullPath);
+            SetWave(currentWave.index);
+        }
+
         Enemy enemy = GetComponent<Enemy>();
         waveCountdown = timeBetweenWaves;
         finalWaveUI.SetActive(false);
     }
 
+    void SetWave(int waveIndex)
+    {
+        nextWave = waveIndex;
+        nextWaveAudio.Play();
+        state = SpawnState.Counting;
+        waveCountdown = timeBetweenWaves;
+        waveTextRound.text = "Wave: " + (nextWave + 1).ToString();
+    }
+
     void Update()
     {
-        if(state == SpawnState.Waiting)
+        if (state == SpawnState.Waiting)
         {
             if (EnemyIsAlive())
             {
@@ -55,10 +81,9 @@ public class WaveSpawner : MonoBehaviour
             {
                 Debug.Log("Wave Completed");
                 nextWave++;
-                nextWaveAudio.Play();
-                state = SpawnState.Counting;
-                waveCountdown = timeBetweenWaves;
-                waveTextRound.text = "Wave: " + (nextWave + 1).ToString();
+                SetWave(nextWave);
+                waves[nextWave].index = nextWave;
+                Save(fullPath, waves[nextWave]);
             }
         }
 
@@ -150,5 +175,23 @@ public class WaveSpawner : MonoBehaviour
         Transform clone = Instantiate(_enemy, transform.position, transform.rotation);
         Enemy enemy = clone.GetComponent<Enemy>();
         enemy.waypointParent = waypointParent;
+    }
+
+
+    public void Save(string path, Wave wave)
+    {
+        var serializer = new XmlSerializer(typeof(Wave));
+        using (var stream = new FileStream(path, FileMode.Create))
+        {
+            serializer.Serialize(stream, wave);
+        }
+    }
+    public static Wave Load(string path)
+    {
+        var serializer = new XmlSerializer(typeof(Wave));
+        using (var stream = new FileStream(path, FileMode.Open))
+        {
+            return serializer.Deserialize(stream) as Wave;
+        }
     }
 }
