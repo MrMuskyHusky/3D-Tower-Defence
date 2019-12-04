@@ -27,6 +27,7 @@ public class WaveSpawner : MonoBehaviour
     public GameObject completeLevelUI, finalWaveUI;
     public Text waveTextRound;
     public AudioSource nextWaveAudio;
+    public AudioSource gameOverAudio;
 
     public float timeBetweenWaves = 5f;
     public float waveCountdown;
@@ -39,7 +40,6 @@ public class WaveSpawner : MonoBehaviour
     {
         Enemy enemy = GetComponent<Enemy>();
         waveCountdown = timeBetweenWaves;
-        nextWaveAudio = GetComponent<AudioSource>();
         finalWaveUI.SetActive(false);
     }
 
@@ -102,6 +102,15 @@ public class WaveSpawner : MonoBehaviour
         if (nextWave == 5)
         {
             completeLevelUI.SetActive(true);
+        }
+
+        if(PlayerStats.Lives <= 0)
+        {
+            if (!gameOverAudio.isPlaying)
+            {
+                Debug.Log("Play this audio source");
+                gameOverAudio.Play();
+            }
         }
     }
 
